@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ namespace TechTrendsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    [AllowAnonymous]
     public class ProcessesController : ControllerBase
     {
         private readonly RemoteContext _context;
