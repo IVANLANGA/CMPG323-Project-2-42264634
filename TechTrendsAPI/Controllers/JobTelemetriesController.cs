@@ -14,6 +14,7 @@ namespace TechTrendsAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [AllowAnonymous]
     //[Authorize(Roles = UserRoles.Admin)]
     public class JobTelemetriesController : ControllerBase
     {
