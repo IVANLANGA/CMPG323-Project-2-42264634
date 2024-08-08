@@ -108,5 +108,81 @@ namespace TechTrendsAPI.Controllers
         {
             return _context.JobTelemetries.Any(e => e.Id == id);
         }
+
+        [HttpGet("savings/project/{projectId}")]
+        public IActionResult GetSavingsByProjectId(Guid projectId, DateTime startDate, DateTime endDate)
+        {
+            var telemetries = _context.JobTelemetries
+                .Join(
+                    _context.Processes,
+                    jobTelemetry => jobTelemetry.ProccesId,
+                    process => process.ProcessId,
+                    (jobTelemetry, process) => new { jobTelemetry, process }
+                )
+                .Join(
+                    _context.Projects,
+                    jtp => jtp.process.ProjectId,
+                    project => project.ProjectId,
+                    (jtp, project) => new { jtp.jobTelemetry, jtp.process, project }
+                )
+                .Where(jtp => jtp.project.ProjectId == projectId
+                            && jtp.jobTelemetry.EntryDate >= startDate
+                            && jtp.jobTelemetry.EntryDate <= endDate)
+                .ToList();
+
+            // Check if ExcludeFromTimeSaving is set for any telemetry
+            var filteredTelemetries = telemetries
+                .Where(jtp => !jtp.jobTelemetry.ExcludeFromTimeSaving.HasValue || !jtp.jobTelemetry.ExcludeFromTimeSaving.Value);
+
+            var totalTimeSaved = filteredTelemetries.Sum(jtp => jtp.jobTelemetry.HumanTime ?? 0); // Handle potential null HumanTime
+            var totalCostSaved = 0; // Assuming no CostSaved property
+
+            var savings = new
+            {
+                ProjectId = projectId,
+                TotalTimeSaved = totalTimeSaved,
+                TotalCostSaved = totalCostSaved
+            };
+
+            return Ok(savings);
+        }
+
+
+
+        [HttpGet("savings/client/{clientId}")]
+        public IActionResult GetSavingsByClientId(Guid clientId, DateTime startDate, DateTime endDate)
+        {
+            var telemetries = _context.JobTelemetries
+                .Join(
+                    _context.Processes,
+                    jobTelemetry => jobTelemetry.ProccesId,
+                    process => process.ProcessId,
+                    (jobTelemetry, process) => new { jobTelemetry, process }
+                )
+                .Join(
+                    _context.Projects,
+                    jtp => jtp.process.ProjectId,
+                    project => project.ProjectId,
+                    (jtp, project) => new { jtp.jobTelemetry, jtp.process, project }
+                )
+                .Where(jtp => jtp.project.ClientId == clientId && jtp.jobTelemetry.EntryDate >= startDate && jtp.jobTelemetry.EntryDate <= endDate)
+                .ToList();
+
+            // Check if ExcludeFromTimeSaving is set for any telemetry
+            var filteredTelemetries = telemetries.Where(t => !t.jobTelemetry.ExcludeFromTimeSaving.HasValue || !t.jobTelemetry.ExcludeFromTimeSaving.Value);
+
+            var totalTimeSaved = filteredTelemetries.Sum(t => t.jobTelemetry.HumanTime ?? 0); // Handle potential null HumanTime
+            var totalCostSaved = 0; // Assuming no CostSaved property
+
+            var savings = new
+            {
+                ClientId = clientId,
+                TotalTimeSaved = totalTimeSaved,
+                TotalCostSaved = totalCostSaved
+            };
+
+            return Ok(savings);
+        }
+
     }
 }

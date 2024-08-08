@@ -7,7 +7,7 @@ public partial class JobTelemetry
 {
     public int Id { get; set; }
 
-    public string? ProccesId { get; set; }
+    public Guid? ProccesId { get; set; }
 
     public string? JobId { get; set; }
 
