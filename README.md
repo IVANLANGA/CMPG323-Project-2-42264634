@@ -1,4 +1,4 @@
-#Telemetry Management System - CMPG 323 Project 2
+Telemetry Management System - CMPG 323 Project 2
 Project Overview
 The Telemetry Management System is designed to help NWU Tech Trends measure and report the time and cost savings achieved by various automation processes. Every time an automation runs, telemetry data is recorded, capturing essential information about the automation's performance. This data is then used to calculate cumulative time and cost savings, which can be filtered by project or client.
 
@@ -48,8 +48,7 @@ Retrieve All Telemetry Records:
 GET https://localhost:7008/api/telemetry
 Response:
 
-json
-Copy code
+
 [
   {
     "id": 1,
@@ -62,8 +61,6 @@ Copy code
 ]
 Calculate Savings by Project:
 
-bash
-Copy code
 GET https://localhost:7008/api/savings/project?projectId=123&startDate=2024-08-01&endDate=2024-08-09
 Response:
 
