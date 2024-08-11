@@ -1,5 +1,8 @@
 Telemetry Management System - CMPG 323 Project 2
 Project Overview
+
+API can be accessd at:
+https://techtrendsapi20240805120331.azurewebsites.net/index.html
 The Telemetry Management System is designed to help NWU Tech Trends measure and report the time and cost savings achieved by various automation processes. Every time an automation runs, telemetry data is recorded, capturing essential information about the automation's performance. This data is then used to calculate cumulative time and cost savings, which can be filtered by project or client.
 
 The project is implemented as a CRUD RESTful API using .NET 8, which allows easy integration and interaction with the telemetry data stored in a SQL Server database. The API supports various operations, including creating, reading, updating, and deleting telemetry records, as well as specialized endpoints for calculating savings.
@@ -45,7 +48,7 @@ Example Requests
 Retrieve All Telemetry Records:
 
 
-GET https://localhost:7008/api/telemetry
+GET https://techtrendsapi20240805120331.azurewebsites.net/api/JobTelemetries
 Response:
 
 
@@ -59,15 +62,6 @@ Response:
   },
   ...
 ]
-Calculate Savings by Project:
 
-GET https://localhost:7008/api/savings/project?projectId=123&startDate=2024-08-01&endDate=2024-08-09
-Response:
-
-
-{
-  "totalTimeSaved": "50 hours",
-  "totalCostSaved": "$5000"
-}
 Authentication
 The API is secured, meaning you must be authenticated to access most endpoints. Ensure you have the necessary credentials and include them in your requests.
